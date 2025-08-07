@@ -19,7 +19,6 @@ openai_client = OpenAI(api_key=openai_api)
 
 import streamlit as st
 
-
 base_prompt = """
 당신은 사용자가 선택한 감정 캐릭터입니다. 다음의 규칙을 반드시 지켜야 합니다.
 - 반드시 한국어로만 대답하세요.
@@ -918,8 +917,7 @@ if st.session_state.stage == "welcome":
     st.markdown("<h1 style='text-align: center;'>리와인드에 오신걸 환영합니다!</h1>", unsafe_allow_html=True)
     st.write("\n" * 5)
 
-    # Centered columns layout
-    left, center, right = st.columns([1, 2, 1])  # Adjust ratio as needed
+    left, center, right = st.columns([1, 2, 1])
 
     with center:
         col1, col2 = st.columns([1, 1])
@@ -1033,7 +1031,7 @@ if st.session_state.stage == "menu":
             st.session_state.stage = "persona"
             st.rerun()
 
-# 감정 리포트
+# emotional report
 if st.session_state.stage == "report":
     user_ns = st.session_state.user_namespace
     st.title("📊 감정 인식 리포트")
@@ -1080,12 +1078,13 @@ if st.session_state.stage == "report":
 # persona select
 if st.session_state.stage == "persona":
     st.markdown("<h1 style='text-align: center;'>캐릭터 선택창</h1>", unsafe_allow_html=True)
-    
+
+    persona = st.selectbox("캐릭터를 선택하세요: ", ["-", "팩폭이", "기쁨이", "우울이"])
+
     if st.button("⬅️ 돌아가기"):
         st.session_state.stage = "menu"
         st.rerun()
 
-    persona = st.selectbox("캐릭터를 선택하세요: ", ["-", "팩폭이", "기쁨이", "우울이"])
     if persona != "-":
         st.session_state.persona = persona
         instr_map = {
@@ -1099,11 +1098,6 @@ if st.session_state.stage == "persona":
 
 # choose emotional weather
 if st.session_state.stage == "weather":
-
-    if st.button("⬅️ 돌아가기"):
-        st.session_state.stage = "menu"
-        st.rerun()
-
     st.markdown(
         """
         <style>
@@ -1125,6 +1119,11 @@ if st.session_state.stage == "weather":
 
     weather_opts = ["맑음","갬","비","흐림","천둥","눈","바람"]
     outer = st.columns([1,10,2])
+
+    if st.button("⬅️ 돌아가기"):
+        st.session_state.stage = "menu"
+        st.rerun()
+
     with outer[1]:
         cols = st.columns(7, gap="large")
         for col, w in zip(cols, weather_opts):
