@@ -1,4 +1,4 @@
-# Rewind AI: 감정 기반 성장 챗봇
+# Rewind AI: Emotion-Based Growth Chatbot
 
 A beta version of a web-based AI chatbot designed to help users reflect on emotions and gain self-understanding through empathetic conversation, emotional journaling, and analytical feedback.
 
@@ -6,10 +6,12 @@ A beta version of a web-based AI chatbot designed to help users reflect on emoti
 
 - [About](#about)
 - [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Virtual Environment Setup](#virtual-environment-setup)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 - [Built With](#built-with)
-- [Contributing](#contributing)
 - [Authors](#authors)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -18,80 +20,121 @@ A beta version of a web-based AI chatbot designed to help users reflect on emoti
 
 ## About
 
-**Rewind (Me:Rewind)** is an emotion-driven growth platform that helps users reflect on their feelings, understand themselves, and rebuild relationships. Built using AI chatbot interactions, the system encourages users to identify their own patterns and emotional triggers through guided conversation and personalized emotional reports.
+**Rewind (Me:Rewind)** is an emotion-driven growth platform that helps users record and understand their feelings, and rebuild relationships. Through conversations with an AI chatbot, users are guided to recognize their own emotional patterns and recurring triggers.
 
-During this project, various LLMs (GPT, Gemini) and personalization strategies were tested to build a functional beta version.
+This project tested various LLMs (GPT, Gemini) and TTS/STT tools (CLOVA, Polly, Whisper), resulting in the development of a functional beta version.
 
 ---
 
-## Getting Started
+## Environment Variables
 
-### Prerequisites
+Create a `.env` file in the project root and add your API keys as follows:
 
-- Python 3.9+
-- Streamlit
-- OpenAI / Google Generative AI credentials
-- Pinecone API (optional, vector DB not used in final storage)
+```
+OPENAI_API_KEY=your_openai_api_key
+GEMINI_API_KEY=your_gemini_api_key
+PINECONE_API_KEY=your_pinecone_api_key
+```
 
-### Installation
+**Do not commit your `.env` file.** It is already included in `.gitignore`.
+
+Share a `.env.example` file with your team, and each member should enter their own values.
+
+---
+
+## Virtual Environment Setup
+
+It is recommended to use a Python virtual environment for dependency management:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+---
+
+## Installation
 
 ```bash
 git clone https://github.com/insunginfo-healthcare/openai-api-test.git
 cd openai-api-test
 pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+Run the app using Streamlit:
+
+```bash
 streamlit run app.py
 ```
 
-## Usage
-Run the app using Streamlit.
+1. Log in or sign up, then select a chatbot persona (Fact-bot, Joy-bot, Sad-bot).
+2. Start chatting. Conversations are saved as JSON files.
+3. After chatting, you can generate daily and weekly emotional reports.
+4. Emotional reports are stored in the main menu.
 
-Choose a chatbot persona: 팩폭이 (Anger), 우울이 (Sadness), or 기쁨이 (Joy).
-
-Start chatting. The chatbot personalizes responses based on your metadata.
-
-Optionally save the conversation at the end to generate a daily emotional report.
-
-Weekly reports are automatically generated every Monday using the last 7 days’ data.
+---
 
 ## Features
-- 🎭 Emotion-Aware Chatbot Personas
-  - 팩폭이: Logical and direct advice
-  - 우울이: Warm empathy and comforting tone
-  - 기쁨이: Positive reinforcement and encouragement
 
-- 💬 Context-Aware Conversations
-  - Previous chats and user metadata are referenced
-  - Sensitive topics avoided unless user brings them up
+- 🎭 Emotion-Based Chatbot Personas  
+  - Fact-bot: Logical and direct feedback  
+  - Sad-bot: Warm empathy and comfort  
+  - Joy-bot: Positive feedback and encouragement
 
-- 📊 Emotional Reports
-  - Daily reports include: major emotions, repeated situations, triggers, emotional time zones, behavior patterns, and AI interpretations
+- 💬 Context-Aware Conversations  
+  - References previous chats and user metadata  
+  - Avoids sensitive topics unless the user brings them up
+
+- 📊 Emotional Reports  
+  - Daily reports: major emotions, repeated situations, triggers, emotional time zones, behavior patterns, AI interpretation, recommended routines  
   - Weekly summaries generated automatically
 
-- 🔐 User Profile System
-  - Login/Signup via local folder management (no backend server)
+- 🔐 User Profile System  
+  - Local folder-based login/signup (no backend server)  
   - Personalized chat memory
 
-- 🧠 Prompt Engineering
-  - Role-appropriate phrasing and emotional responses
-  - Adjusts tone based on user intent (e.g., asking for advice vs. expressing frustration)
+- 🧠 Prompt Engineering  
+  - Role-appropriate phrasing and emotional responses  
+  - Adjusts tone based on user intent (e.g., advice requests vs. emotional expression)
+
+- 🗂️ Data Storage  
+  - All chat and report data are stored as JSON files (no database used for now)
+
+- 🤖 LLM Models  
+  - Uses OpenAI GPT and Google Gemini 2.0 Flash for chatbot responses
+
+- 🚀 Streamlit UI  
+  - Provides a web interface for chatbot and emotional report features
+
+---
 
 ## Built With
+
 - Streamlit
 - Google Gemini 2.0 Flash
 - OpenAI GPT
-- Pinecone (for vector memory testing)
+- Pinecone (User Vector Database)
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
+---
 
 ## Authors
-Joshua (Seung Jun) Hwang (황승준) – Intern Developer
-[GitHub Repository]([url](https://github.com/insunginfo-healthcare/openai-api-test))
+
+Seung Jun Hwang – Intern Developer, AI Emotion Platform 
+GitHub Repository: [https://github.com/insunginfo-healthcare/openai-api-test](https://github.com/joshuah224/rewind-webapp)
+
+---
 
 ## License
-This project is licensed for internal educational and prototyping use. Contact the author for other uses.
+
+This project is licensed for internal educational and prototyping use only. Contact the author for other uses.
+
+---
 
 ## Acknowledgments
-Internship guided by [insunginfo-healthcare team]
 
-Special thanks to my teammates for feedback: Lee Yoochang, Pyeon Do-Heon
+Guidance and feedback from the Insung Information Healthcare team
+Thanks to teammates for UI & UX testing and feedback: Yoochang Lee, Dohyeon Pyeon
