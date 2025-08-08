@@ -4,7 +4,7 @@ import json
 
 from dotenv import load_dotenv
 from google import generativeai as genai
-load_dotenv(dotenv_path='envar.env')
+load_dotenv(dotenv_path='.env')
 
 from pinecone import Pinecone
 pinecone_api = os.getenv("PINECONE_API_KEY")
@@ -115,7 +115,7 @@ def user_login():
         # st.success("✅ 프로필을 찾았습니다! 대화를 시작합니다…")
         st.session_state.user_namespace = user_namespace
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        user_chat_dir = os.path.join(base_dir, "gemini", "chat_data", user_namespace)
+        user_chat_dir = os.path.join(base_dir, "chat_data", user_namespace)
         os.makedirs(user_chat_dir, exist_ok=True)
         st.session_state.chat_dir = user_chat_dir
 
@@ -174,7 +174,7 @@ def user_signup():
             })
             # create chat history folder
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            user_chat_dir = os.path.join(base_dir, "gemini", "chat_data", st.session_state.user_namespace)
+            user_chat_dir = os.path.join(base_dir, "chat_data", st.session_state.user_namespace)
             os.makedirs(user_chat_dir, exist_ok=True)
             st.session_state.chat_dir = user_chat_dir
             st.success("✅ 프로필 생성 완료!")
@@ -1150,25 +1150,26 @@ if st.session_state.stage == "chat":
     chat_history = load_history(10)
 
     # start chat
-    gemini_api = os.getenv("GEMINI_API_KEY")
+    if "chat" not in st.session_state:
+        gemini_api = os.getenv("GEMINI_API_KEY")
 
-    genai.configure(api_key=gemini_api)
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash", 
-        system_instruction=st.session_state.base_prompt)
-    
-    st.session_state.chat = model.start_chat(history=chat_history) 
-    st.session_state.messages = []
+        genai.configure(api_key=gemini_api)
+        model = genai.GenerativeModel(
+            model_name="gemini-2.0-flash", 
+            system_instruction=st.session_state.base_prompt)
+        
+        st.session_state.chat = model.start_chat(history=chat_history) 
+        st.session_state.messages = []
 
-    weather_prompt = f"""
-    사용자의 오늘의 감정 날씨는 {st.session_state.weather}입니다.
-    사용자가 선택한 {st.session_state.persona} 캐릭터에 맞게 인사말을 하세요.
-    """
-    response = st.session_state.chat.send_message(weather_prompt)
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": response.text.strip()
-    })
+        weather_prompt = f"""
+        사용자의 오늘의 감정 날씨는 {st.session_state.weather}입니다.
+        사용자가 선택한 {st.session_state.persona} 캐릭터에 맞게 인사말을 하세요.
+        """
+        response = st.session_state.chat.send_message(weather_prompt)
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": response.text.strip()
+        })
 
     # chat history button
     st.sidebar.button("챗 히스토리 저장", on_click=lambda: save_todays_chat(st.session_state.messages))
